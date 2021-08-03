@@ -3,7 +3,7 @@
 # 1) Сделать слайдер, который будет отвечать за размер фигуры, рядом выводить значение слайдера.
 # 2) Сделать слайдер для поворота фигуры, рядом выводить значение слайдера.
 
-# Интерфейс: Справа канвас, слева выбор фигуры, слайдер размера, слайдер поворота
+# Интерфейс: Справа канвас, слева выбор фигуры, слайдер размера, слайдер поворота, сообщения об ошибках
 
 from tkinter import *
 from tkinter.ttk import Combobox
@@ -26,12 +26,14 @@ rotation_label = Label(param_frame, text='Shape rotation:')
 rotation_slider = Scale(param_frame, orient=HORIZONTAL, length=200, from_=0, to_=359, resolution=1)
 rotation_slider.set(0)
 
+shape_names = {'Arrow': Arrow(), 'Triangle': Triangle(), 'Square': Square(), 'Circle': Circle()}
 shape_menu = Combobox(param_frame)
-shapes = ['Choose the shape...']
-# Requires implementation of class Shape and all the needed Shape classes
-# shapes.append(shape_names.keys())
+shapes = list(shape_names.keys())
+shapes.insert(0, 'Choose the shape...')
 shape_menu['values'] = tuple(shapes)
 shape_menu.current(0)
+
+info_label = Label(param_frame, text='', fg='red')
 
 canvas = Canvas(window, width=WINDOW_SIZE, height=WINDOW_SIZE, bg='white')
 
@@ -40,15 +42,22 @@ scale_slider.grid(column=0, row=1)
 rotation_label.grid(column=0, row=2)
 rotation_slider.grid(column=0, row=3)
 shape_menu.grid(column=0, row=4)
+info_label.grid(column=0, row=5)
 
 param_frame.grid(column=0, row=0)
 canvas.grid(column=1, row=0)
 
 
-def draw_polygon(coordinates):
-        canvas.create_polygon(tuple())
+def draw_polygon(event):
+    shape = shape_menu.get()
+    if shape in shape_names:
+        info_label.configure(text='')
+        shape_names[shape].draw_shape(canvas, event.x, event.y, scale_slider.get(), rotation_slider.get())
+    else:
+        info_label.configure(text='Please, choose \nthe correct shape')
 
+
+canvas.bind('<Button-1>', draw_polygon)
 
 window.resizable(0, 0)
-
 window.mainloop()
