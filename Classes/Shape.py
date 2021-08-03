@@ -1,10 +1,9 @@
-from abc import ABC, abstractmethod
 import math
 from copy import deepcopy
 import random
 
 
-class Shape(ABC):
+class Shape:
     def __init__(self):
         self._name = 'name'
         self.scale_modifier = 1
