@@ -7,6 +7,7 @@
 
 from tkinter import *
 from tkinter.ttk import Combobox
+from Classes.Shapes import *
 
 WINDOW_SIZE = 800
 window = Tk()
