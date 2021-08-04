@@ -3,12 +3,13 @@ from copy import deepcopy
 import random
 
 
+# base class for shape classes
 class Shape:
     def __init__(self):
         self._name = 'name'
         self.scale_modifier = 1
+        # base scale modifier - so that it would be easier to input base vertex coordinates for shapes
 
-    _vertices = list()
     _vertices = list()
 
     def get_name(self):
@@ -32,9 +33,9 @@ class Shape:
             vertices[i][1] = y + vertices[i][1]
         return vertices
 
-    def draw_shape(self, canvas, x, y, scale, rotation):
+    def draw_shape(self, canvas, x, y, scale, rotation):  # not abstract as its not same for every shape (e.g. circle)
         rad_rotation = rotation / 180.0 * math.pi
         vertices = self.transform_poly(deepcopy(self._vertices), x, y, scale, rad_rotation)
 
-        color = '#' + hex(random.randint(0, 16777215))[2:].zfill(6)
+        color = '#' + hex(random.randint(0, 2**24-1))[2:].zfill(6)  # random shape fill color
         canvas.create_polygon(vertices, fill=color, outline='black')

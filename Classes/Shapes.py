@@ -32,13 +32,12 @@ class Circle(Shape):
         self._name = 'circle'
         self.scale_modifier = 40
 
-    _vertices = (-1, -1, 1, 1)
-
+    # circle isn't a polygon, so redefining
     def draw_shape(self, canvas: Canvas, x, y, scale, rotation):
         border_vertices = [x + scale * self.scale_modifier * -1,
                            y + scale * self.scale_modifier * -1,
                            x + scale * self.scale_modifier * 1,
                            y + scale * self.scale_modifier * 1]
 
-        color = '#' + hex(random.randint(0, 16777215))[2:].zfill(6)
-        canvas.create_oval(border_vertices, fill=color)
+        color = '#' + hex(random.randint(0, 2**24-1))[2:].zfill(6)
+        canvas.create_oval(border_vertices, fill=color, outline='black')
